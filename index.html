@@ -1,0 +1,207 @@
+from pathlib import Path
+
+html = r'''<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sito personale professionale di un ingegnere aerospaziale.">
+  <title>Nome Cognome — Aerospace Engineer</title>
+  <style>
+    :root {
+      --site-primary: #173b5e;
+      --site-secondary: #eaf0f5;
+      --site-background: #ffffff;
+      --site-on-primary: #ffffff;
+      --site-on-secondary: #173b5e;
+      --site-on-background: #202a35;
+      --site-font-body: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --site-font-heading: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --site-heading-scale: 1;
+      --site-spacing-scale: 1;
+      --site-radius-scale: 1;
+      --site-decoration-opacity: 1;
+      --ink: light-dark(#202a35, #e8edf2);
+      --muted: light-dark(#5b6875, #aab6c2);
+      --surface: light-dark(#ffffff, #171d24);
+      --line: light-dark(#dce3e9, #303a45);
+      --soft: light-dark(#f5f8fa, #202832);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; color-scheme: light dark; }
+    body {
+      margin: 0;
+      font-family: var(--site-font-body);
+      background: var(--site-background);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    .root {
+      min-height: 100vh;
+      width: 100%;
+      background-color: var(--site-background);
+      color: var(--ink);
+      border-radius: 0;
+    }
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .nav {
+      max-width: 980px;
+      margin: auto;
+      padding: calc(18px * var(--site-spacing-scale)) 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { color: var(--site-primary); font-weight: 750; letter-spacing: -.025em; text-decoration: none; }
+    .links { display: flex; gap: 22px; flex-wrap: wrap; }
+    .links a, .text-link { color: var(--site-primary); text-decoration: none; font-size: .93rem; }
+    .links a:hover, .text-link:hover { text-decoration: underline; }
+    main { max-width: 860px; margin: auto; padding: 0 26px 70px; }
+    .hero { padding: calc(86px * var(--site-spacing-scale)) 0 calc(64px * var(--site-spacing-scale)); }
+    .eyebrow { color: var(--site-primary); font-size: .78rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 750; }
+    h1, h2, h3 { font-family: var(--site-font-heading); line-height: 1.2; color: var(--ink); }
+    h1 { font-size: calc(clamp(2.4rem, 7vw, 4.1rem) * var(--site-heading-scale)); letter-spacing: -.055em; margin: 14px 0 14px; }
+    .subtitle { font-size: clamp(1.15rem, 3vw, 1.4rem); color: var(--muted); margin: 0 0 24px; }
+    .intro { max-width: 660px; font-size: 1.05rem; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; border-radius: calc(7px * var(--site-radius-scale)); padding: 10px 16px; border: 1px solid var(--site-primary); background: var(--site-primary); color: var(--site-on-primary); text-decoration: none; font-weight: 650; font-size: .94rem; }
+    .button.secondary { color: var(--site-primary); background: transparent; }
+    section { padding: calc(34px * var(--site-spacing-scale)) 0; border-top: 1px solid var(--line); }
+    h2 { font-size: calc(1.65rem * var(--site-heading-scale)); letter-spacing: -.03em; margin: 0 0 20px; }
+    h3 { font-size: 1.08rem; margin: 0 0 4px; }
+    p { margin: 0 0 13px; }
+    .muted { color: var(--muted); }
+    .entry { display: grid; grid-template-columns: 155px 1fr; gap: 22px; padding: 16px 0; }
+    .date { font-size: .9rem; color: var(--muted); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    .tag { background: var(--soft); border: 1px solid var(--line); border-radius: 5px; padding: 4px 9px; font-size: .84rem; }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .project { border: 1px solid var(--line); border-radius: calc(9px * var(--site-radius-scale)); padding: 20px; background: var(--surface); }
+    .project p { color: var(--muted); font-size: .95rem; margin: 8px 0 0; }
+    .contact-box { background: var(--site-secondary); color: var(--site-on-secondary); border-radius: calc(10px * var(--site-radius-scale)); padding: 26px; }
+    .contact-box h2, .contact-box p { color: var(--site-on-secondary); }
+    footer { border-top: 1px solid var(--line); padding: 24px 26px; color: var(--muted); font-size: .85rem; }
+    .footer-inner { max-width: 860px; margin: auto; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    @media (max-width: 640px) {
+      .nav { align-items: flex-start; flex-direction: column; }
+      .links { gap: 14px; }
+      main { padding-left: 20px; padding-right: 20px; }
+      .hero { padding-top: 58px; }
+      .entry { grid-template-columns: 1fr; gap: 3px; }
+      .project-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="root" id="top">
+    <header class="topbar">
+      <nav class="nav" aria-label="Navigazione principale">
+        <a class="brand" href="#top">Nome Cognome</a>
+        <div class="links">
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="hero">
+        <div class="eyebrow">Personal website</div>
+        <h1>Nome Cognome</h1>
+        <p class="subtitle">Aerospace Engineer · Space Systems AIT</p>
+        <p class="intro">Mi occupo di integrazione, verifica e test di sistemi spaziali. In questa pagina raccolgo il mio percorso professionale, alcuni progetti e le competenze che sto sviluppando nel settore aerospaziale.</p>
+        <div class="actions">
+          <a class="button" href="#experience">Scopri il mio percorso</a>
+          <a class="button secondary" href="mailto:tuoindirizzo@email.com">Contattami</a>
+        </div>
+      </div>
+
+      <section id="about">
+        <h2>About me</h2>
+        <p>Sono un ingegnere aerospaziale interessato ai sistemi spaziali, alle attività di Assembly, Integration and Test (AIT) e alla verifica delle prestazioni di un satellite lungo le diverse fasi di sviluppo.</p>
+        <p class="muted">Personalizza questa sezione con una breve presentazione in prima persona, il tuo percorso di studi e gli ambiti tecnici che ti interessano maggiormente.</p>
+      </section>
+
+      <section id="experience">
+        <h2>Experience</h2>
+        <div class="entry">
+          <div class="date">2023 — Present</div>
+          <div>
+            <h3>System AIT Engineer</h3>
+            <p><strong>Nome azienda</strong> · Milano, Italia</p>
+            <p>Integrazione e test a livello di sistema, supporto alle campagne di verifica e coordinamento con i team di ingegneria.</p>
+            <p class="muted">Aggiungi risultati e responsabilità che puoi condividere pubblicamente. Evita dati riservati o informazioni proprietarie.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <h2>Selected projects</h2>
+        <div class="project-grid">
+          <article class="project">
+            <h3>Satellite integration & test</h3>
+            <p>Una breve descrizione delle attività di integrazione, test funzionali e preparazione alle campagne ambientali o di lancio.</p>
+          </article>
+          <article class="project">
+            <h3>University project</h3>
+            <p>Descrivi un progetto accademico, una simulazione o un'attività di analisi di missione, controllo d'assetto o sistemi spaziali.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="skills">
+        <h2>Skills & education</h2>
+        <h3>Technical skills</h3>
+        <div class="tags">
+          <span class="tag">Space systems</span>
+          <span class="tag">System AIT</span>
+          <span class="tag">Verification & testing</span>
+          <span class="tag">ECSS standards</span>
+          <span class="tag">Test procedures</span>
+          <span class="tag">Data analysis</span>
+        </div>
+        <h3 style="margin-top: 26px;">Education</h3>
+        <div class="entry">
+          <div class="date">Anno — Anno</div>
+          <div>
+            <h3>Laurea Magistrale in Ingegneria Spaziale</h3>
+            <p>Politecnico di Milano</p>
+            <p class="muted">Inserisci tesi o corsi rilevanti, se utili al profilo professionale.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="contact-box">
+          <h2>Get in touch</h2>
+          <p>Per contatti professionali, collaborazioni o scambi tecnici, puoi scrivermi via email o trovarmi su LinkedIn.</p>
+          <div class="actions">
+            <a class="button" href="mailto:tuoindirizzo@email.com">Email</a>
+            <a class="button secondary" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="button secondary" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-inner">
+        <span>© <span id="year">2026</span> Nome Cognome</span>
+        <a class="text-link" href="#top">Torna all'inizio ↑</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+'''
+path = Path("/mnt/data/personal-portfolio-template.html")
+path.write_text(html, encoding="utf-8")
+print(f"Creato: {path} ({path.stat().st_size} byte)")
